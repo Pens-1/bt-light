@@ -63,6 +63,28 @@ void handleHTTP() {
     } else if (req.indexOf("POST /night") >= 0) {
         lamp.nightLight();
         response += "{\"action\":\"night\"}";
+    } else if (req.indexOf("POST /monitor/on") >= 0) {
+        digitalWrite(RELAY_MONITOR_PIN, HIGH);
+        response += "{\"action\":\"monitor\",\"state\":\"on\"}";
+    } else if (req.indexOf("POST /monitor/off") >= 0) {
+        digitalWrite(RELAY_MONITOR_PIN, LOW);
+        response += "{\"action\":\"monitor\",\"state\":\"off\"}";
+    } else if (req.indexOf("POST /rflight/on") >= 0) {
+        digitalWrite(RELAY_RF_PIN, HIGH);
+        response += "{\"action\":\"rflight\",\"state\":\"on\"}";
+    } else if (req.indexOf("POST /rflight/off") >= 0) {
+        digitalWrite(RELAY_RF_PIN, LOW);
+        response += "{\"action\":\"rflight\",\"state\":\"off\"}";
+    } else if (req.indexOf("POST /desk/1") >= 0) {
+        digitalWrite(DESK_BTN1_PIN, HIGH);
+        delay(DESK_PULSE_MS);
+        digitalWrite(DESK_BTN1_PIN, LOW);
+        response += "{\"action\":\"desk\",\"button\":1}";
+    } else if (req.indexOf("POST /desk/2") >= 0) {
+        digitalWrite(DESK_BTN2_PIN, HIGH);
+        delay(DESK_PULSE_MS);
+        digitalWrite(DESK_BTN2_PIN, LOW);
+        response += "{\"action\":\"desk\",\"button\":2}";
     } else {
         response += "{\"status\":\"ok\",\"device\":\"bt-light\"}";
     }
@@ -76,6 +98,20 @@ void setup() {
     Serial.begin(115200);
     delay(1000);
     Serial.println("\n=== bt-light ===");
+    // リレーGPIO初期化（LOW=OFF）
+    pinMode(RELAY_MONITOR_PIN, OUTPUT);
+    pinMode(RELAY_RF_PIN, OUTPUT);
+    digitalWrite(RELAY_MONITOR_PIN, LOW);
+    digitalWrite(RELAY_RF_PIN, LOW);
+    Serial.printf("[RELAY] monitor=GPIO%d, rf=GPIO%d\n", RELAY_MONITOR_PIN, RELAY_RF_PIN);
+
+    // デスク制御GPIO初期化（LOW=OFF）
+    pinMode(DESK_BTN1_PIN, OUTPUT);
+    pinMode(DESK_BTN2_PIN, OUTPUT);
+    digitalWrite(DESK_BTN1_PIN, LOW);
+    digitalWrite(DESK_BTN2_PIN, LOW);
+    Serial.printf("[DESK] btn1=GPIO%d, btn2=GPIO%d\n", DESK_BTN1_PIN, DESK_BTN2_PIN);
+
     lamp.begin();
     if (PAIR_ON_BOOT) {
         Serial.println("[BOOT] PAIR_ON_BOOT!");

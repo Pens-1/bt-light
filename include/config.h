@@ -27,3 +27,12 @@
 
 // ペアリング時の繰り返し回数（ウィンドウが短いので多めに）
 #define BLE_PAIR_REPEAT 50
+
+// リレー制御GPIOピン
+#define RELAY_MONITOR_PIN 25   // モニターライト
+#define RELAY_RF_PIN      26   // RFライト
+
+// デスク制御GPIOピン（S8050経由、パルスでボタン押下）
+#define DESK_BTN1_PIN 12   // メモリーボタン1
+#define DESK_BTN2_PIN 13   // メモリーボタン2
+#define DESK_PULSE_MS 300  // ボタン押下時間(ms)
