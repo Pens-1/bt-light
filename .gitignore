@@ -1,0 +1,15 @@
+.pio
+bugreport_fresh/
+bugreport_fresh.zip
+bugreport_fresh2/
+bugreport_fresh2.zip
+bugreport_rgb/
+bugreport_rgb.zip
+bugreport_rgb2/
+bugreport_rgb2.zip
+btsnoop_new.log
+tools/decode_phone
+tools/lampify
+tools/raw_send
+tools/verify
+include/credentials.h
