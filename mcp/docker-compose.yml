@@ -3,10 +3,13 @@ services:
     build: .
     container_name: bt_light_mcp
     restart: unless-stopped
+    ports:
+      - "8766:8766"
     environment:
       - BT_LIGHT_HOST=${BT_LIGHT_HOST:-192.168.0.43}
       - MCP_API_KEY=${MCP_API_KEY}
       - MCP_PORT=8766
+      - MCP_BASE_URL=https://mcp-my-room.fullweak.com
     volumes:
       - ./logs:/app/logs
       - ./session:/app/session
