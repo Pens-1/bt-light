@@ -126,25 +126,25 @@ async def lamp_brightness(cold: int, warm: int) -> str:
 
 @mcp.tool()
 async def tape_on() -> str:
-    """デスクのテープライト（GPIO14リレー）を点灯する。"""
+    """デスクのテープライトを点灯する。"""
     return await _post("/tape/on")
 
 
 @mcp.tool()
 async def tape_off() -> str:
-    """デスクのテープライト（GPIO14リレー）を消灯する。"""
+    """デスクのテープライトを消灯する。"""
     return await _post("/tape/off")
 
 
 @mcp.tool()
 async def monitor_on() -> str:
-    """モニターライト（GPIO15リレー）を点灯する。"""
+    """モニターライトを点灯する。"""
     return await _post("/monitor/on")
 
 
 @mcp.tool()
 async def monitor_off() -> str:
-    """モニターライト（GPIO15リレー）を消灯する。"""
+    """モニターライトを消灯する。"""
     return await _post("/monitor/off")
 
 
@@ -156,7 +156,7 @@ async def desk_button(button: int) -> str:
     """昇降デスクのメモリーボタンを押す。
 
     Args:
-        button: ボタン番号 (1 or 2)
+        button: ボタン番号 (1=一番低い座り高さ, 2=一番高い立ち高さ)
     """
     if button not in (1, 2):
         return "エラー: button は 1 か 2 を指定してください"
