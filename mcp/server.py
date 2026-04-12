@@ -66,19 +66,37 @@ async def _post(path: str) -> str:
         return f"エラー: {e}"
 
 
-# ── BLEライト ──────────────────────────────────────────────
+# ── 照明一括制御 ───────────────────────────────────────────
 
 
 @mcp.tool()
-async def lamp_on() -> str:
-    """天井のBLEライトを点灯する。"""
-    return await _post("/on")
+async def lights(targets: list[str], on: bool) -> str:
+    """照明を制御する。複数同時指定可能、並列実行される。
+
+    Args:
+        targets: 制御対象のリスト。以下の値の組み合わせ:
+            "lamp"    - 天井のBLEライト
+            "tape"    - デスクのテープライト
+            "monitor" - モニターライト
+        on: True=点灯, False=消灯
+    """
+    import asyncio
+
+    _path_map = {
+        "lamp":    ("/on",         "/off"),
+        "tape":    ("/tape/on",    "/tape/off"),
+        "monitor": ("/monitor/on", "/monitor/off"),
+    }
+    unknown = [t for t in targets if t not in _path_map]
+    if unknown:
+        return f"エラー: 不明なターゲット {unknown}。lamp / tape / monitor を指定してください"
+
+    tasks = [_post(_path_map[t][0 if on else 1]) for t in targets]
+    results = await asyncio.gather(*tasks)
+    return "\n".join(results)
 
 
-@mcp.tool()
-async def lamp_off() -> str:
-    """天井のBLEライトを消灯する。"""
-    return await _post("/off")
+# ── BLEライト詳細設定 ──────────────────────────────────────
 
 
 @mcp.tool()
@@ -119,33 +137,6 @@ async def lamp_brightness(cold: int, warm: int) -> str:
     cold = max(0, min(255, cold))
     warm = max(0, min(255, warm))
     return await _post(f"/brightness?cold={cold}&warm={warm}")
-
-
-# ── リレー（テープライト・モニターライト） ──────────────────
-
-
-@mcp.tool()
-async def tape_on() -> str:
-    """デスクのテープライトを点灯する。"""
-    return await _post("/tape/on")
-
-
-@mcp.tool()
-async def tape_off() -> str:
-    """デスクのテープライトを消灯する。"""
-    return await _post("/tape/off")
-
-
-@mcp.tool()
-async def monitor_on() -> str:
-    """モニターライトを点灯する。"""
-    return await _post("/monitor/on")
-
-
-@mcp.tool()
-async def monitor_off() -> str:
-    """モニターライトを消灯する。"""
-    return await _post("/monitor/off")
 
 
 # ── 昇降デスク ────────────────────────────────────────────
