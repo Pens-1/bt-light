@@ -18,6 +18,7 @@ from pathlib import Path
 
 import httpx
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
 _log_dir = Path(__file__).parent / "logs"
 _log_dir.mkdir(exist_ok=True)
@@ -33,9 +34,19 @@ logger = logging.getLogger(__name__)
 
 ESP32_HOST = os.environ.get("BT_LIGHT_HOST", "192.168.0.43")
 BASE_URL = f"http://{ESP32_HOST}"
-HTTP_PORT = int(os.environ.get("MCP_PORT", "8765"))
+HTTP_PORT = int(os.environ.get("MCP_PORT", "8766"))
 
-mcp = FastMCP("bt-light")
+# MCP_BASE_URLからホスト名を取得してTransportSecuritySettingsに渡す
+_mcp_base_url = os.environ.get("MCP_BASE_URL", f"http://localhost:{HTTP_PORT}")
+_mcp_host = _mcp_base_url.replace("https://", "").replace("http://", "").split("/")[0]
+
+mcp = FastMCP(
+    "bt-light",
+    transport_security=TransportSecuritySettings(
+        allowed_hosts=[_mcp_host, "localhost", "127.0.0.1"],
+        allowed_origins=["https://claude.ai", "https://claude.com"],
+    ),
+)
 
 
 async def _post(path: str) -> str:
