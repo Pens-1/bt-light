@@ -1,0 +1,14 @@
+services:
+  bt-light-mcp:
+    build: .
+    container_name: bt_light_mcp
+    restart: unless-stopped
+    environment:
+      - BT_LIGHT_HOST=${BT_LIGHT_HOST:-192.168.0.43}
+      - MCP_API_KEY=${MCP_API_KEY}
+      - MCP_PORT=8766
+    volumes:
+      - ./logs:/app/logs
+      - ./session:/app/session
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
