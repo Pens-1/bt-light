@@ -29,8 +29,8 @@
 #define BLE_PAIR_REPEAT 50
 
 // リレー制御GPIOピン
-#define RELAY_MONITOR_PIN 25   // モニターライト
-#define RELAY_RF_PIN      26   // RFライト
+#define RELAY_TAPE_PIN    14   // テープライト
+#define RELAY_MONITOR_PIN 15   // モニターライト
 
 // デスク制御GPIOピン（S8050経由、パルスでボタン押下）
 #define DESK_BTN1_PIN 12   // メモリーボタン1

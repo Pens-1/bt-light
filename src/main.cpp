@@ -69,12 +69,12 @@ void handleHTTP() {
     } else if (req.indexOf("POST /monitor/off") >= 0) {
         digitalWrite(RELAY_MONITOR_PIN, LOW);
         response += "{\"action\":\"monitor\",\"state\":\"off\"}";
-    } else if (req.indexOf("POST /rflight/on") >= 0) {
-        digitalWrite(RELAY_RF_PIN, HIGH);
-        response += "{\"action\":\"rflight\",\"state\":\"on\"}";
-    } else if (req.indexOf("POST /rflight/off") >= 0) {
-        digitalWrite(RELAY_RF_PIN, LOW);
-        response += "{\"action\":\"rflight\",\"state\":\"off\"}";
+    } else if (req.indexOf("POST /tape/on") >= 0) {
+        digitalWrite(RELAY_TAPE_PIN, HIGH);
+        response += "{\"action\":\"tape\",\"state\":\"on\"}";
+    } else if (req.indexOf("POST /tape/off") >= 0) {
+        digitalWrite(RELAY_TAPE_PIN, LOW);
+        response += "{\"action\":\"tape\",\"state\":\"off\"}";
     } else if (req.indexOf("POST /desk/1") >= 0) {
         digitalWrite(DESK_BTN1_PIN, HIGH);
         delay(DESK_PULSE_MS);
@@ -98,12 +98,12 @@ void setup() {
     Serial.begin(115200);
     delay(1000);
     Serial.println("\n=== bt-light ===");
-    // リレーGPIO初期化（LOW=OFF）
+    // リレーGPIO初期化（HIGH=ON）
+    pinMode(RELAY_TAPE_PIN, OUTPUT);
     pinMode(RELAY_MONITOR_PIN, OUTPUT);
-    pinMode(RELAY_RF_PIN, OUTPUT);
-    digitalWrite(RELAY_MONITOR_PIN, LOW);
-    digitalWrite(RELAY_RF_PIN, LOW);
-    Serial.printf("[RELAY] monitor=GPIO%d, rf=GPIO%d\n", RELAY_MONITOR_PIN, RELAY_RF_PIN);
+    digitalWrite(RELAY_TAPE_PIN, HIGH);
+    digitalWrite(RELAY_MONITOR_PIN, HIGH);
+    Serial.printf("[RELAY] tape=GPIO%d, monitor=GPIO%d\n", RELAY_TAPE_PIN, RELAY_MONITOR_PIN);
 
     // デスク制御GPIO初期化（LOW=OFF）
     pinMode(DESK_BTN1_PIN, OUTPUT);

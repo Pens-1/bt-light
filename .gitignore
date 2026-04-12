@@ -13,3 +13,5 @@ tools/lampify
 tools/raw_send
 tools/verify
 include/credentials.h
+mcp/logs/
+mcp/session/
