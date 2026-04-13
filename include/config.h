@@ -11,6 +11,12 @@
 // HTTP APIポート
 #define HTTP_PORT 80
 
+// 固定IPアドレス設定
+#define STATIC_IP      IPAddress(192, 168, 0, 43)
+#define STATIC_GATEWAY IPAddress(192, 168, 0,  1)
+#define STATIC_SUBNET  IPAddress(255, 255, 255, 0)
+#define STATIC_DNS     IPAddress(8, 8, 8, 8)
+
 // ライトのコントローラID（24ビット）
 // スマホの既存ペアリングID: 0x0950CF
 #define CONTROLLER_ID 0x0950CF

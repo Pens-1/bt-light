@@ -12,6 +12,7 @@ LampController lamp;
 WiFiServer httpServer(HTTP_PORT);
 
 void setupWiFi() {
+    WiFi.config(STATIC_IP, STATIC_GATEWAY, STATIC_SUBNET, STATIC_DNS);
     WiFi.begin(WIFI_SSID, WIFI_PASS);
     Serial.printf("[WiFi] connecting to %s", WIFI_SSID);
     int attempts = 0;
